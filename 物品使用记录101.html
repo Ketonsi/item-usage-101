@@ -1,0 +1,1951 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>物品使用记录101</title>
+  <style>
+    @font-face {
+      font-family: "Usage Han";
+      src: local("Source Han Serif SC"), local("Source Han Serif CN"), local("思源宋体"), local("Noto Serif SC");
+    }
+
+    @font-face {
+      font-family: "Usage Latin";
+      src: local("Inter"), local("Segoe UI");
+    }
+
+    @font-face {
+      font-family: "Usage Mono";
+      src: local("Source Code Pro"), local("Consolas");
+    }
+
+    :root {
+      --page-bg: #f9f6ff;
+      --ink: #25183d;
+      --muted: #74668a;
+      --purple-900: #33204f;
+      --purple-700: #6840a7;
+      --purple-600: #7b4bc5;
+      --purple-300: #c8afea;
+      --purple-200: #e7dbfb;
+      --purple-100: #f3edff;
+      --sage-100: #edf7f1;
+      --sage-300: #c8dfcf;
+      --sage-500: #6ea77f;
+      --surface: rgba(255, 255, 255, .88);
+      --surface-strong: #fff;
+      --line: rgba(93, 61, 136, .16);
+      --line-strong: rgba(104, 64, 167, .36);
+      --shadow: 0 18px 40px rgba(75, 48, 116, .12);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(135deg, rgba(243, 237, 255, .96), rgba(249, 246, 255, .96) 48%, rgba(237, 247, 241, .92));
+      font-family: "Usage Han", "Usage Latin", "Noto Serif SC", "Microsoft YaHei", serif;
+      line-height: 1.7;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .mono,
+    .metric-value,
+    .date,
+    .chart-label,
+    .money {
+      font-family: "Usage Mono", "Usage Latin", monospace;
+      letter-spacing: .01em;
+    }
+
+    .app-shell {
+      width: min(1500px, calc(100vw - 44px));
+      margin: 0 auto;
+      padding: 28px 0 44px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .brand small {
+      display: block;
+      color: var(--purple-700);
+      font-family: "Usage Latin", sans-serif;
+      font-weight: 800;
+      letter-spacing: .01em;
+      margin-bottom: 2px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1.08;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .date-card,
+    .progress-card {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 11px 16px;
+    }
+
+    .date-card strong,
+    .progress-card strong {
+      display: block;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .date-card span,
+    .progress-card span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+
+    .hero-copy,
+    .demo-stage,
+    .panel,
+    .chapter-panel,
+    .lesson-card,
+    .result-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-copy {
+      padding: 24px;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .eyebrow {
+      margin: 0 0 6px;
+      color: var(--purple-700);
+      font-family: "Usage Latin", sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+
+    .hero-copy h2,
+    .section-heading h2,
+    .chapter-panel h3,
+    .lesson-card h3 {
+      margin: 0;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .hero-copy h2 {
+      font-size: clamp(26px, 3vw, 38px);
+      line-height: 1.18;
+    }
+
+    .hero-copy p {
+      margin: 14px 0 0;
+      color: var(--muted);
+      max-width: 82ch;
+    }
+
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .hero-point {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(243, 237, 255, .9), rgba(255, 255, 255, .78));
+      padding: 12px;
+    }
+
+    .hero-point strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .hero-point span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .demo-stage {
+      padding: 18px;
+      overflow: hidden;
+      position: relative;
+      min-height: 328px;
+    }
+
+    .mock-app {
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(255, 255, 255, .92), rgba(243, 237, 255, .92));
+      min-height: 292px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      overflow: hidden;
+    }
+
+    .mock-tabs {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, .7);
+    }
+
+    .mock-tabs span {
+      padding: 12px 8px;
+      text-align: center;
+      font-weight: 800;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .mock-tabs span:first-child {
+      color: white;
+      background: var(--purple-700);
+      box-shadow: 0 8px 18px rgba(104, 64, 167, .28);
+    }
+
+    .mock-body {
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      gap: 14px;
+      padding: 14px;
+      min-height: 238px;
+    }
+
+    .mock-side,
+    .mock-main {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .82);
+      padding: 12px;
+    }
+
+    .mock-side h4,
+    .mock-main h4 {
+      margin: 0 0 12px;
+      font-size: 16px;
+    }
+
+    .mock-category {
+      border: 1px solid var(--purple-200);
+      background: var(--surface-strong);
+      border-radius: var(--radius);
+      padding: 12px;
+      margin-bottom: 9px;
+      min-height: 52px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+      animation: floatSelect 4.8s infinite;
+    }
+
+    .mock-category:nth-child(3) {
+      animation-delay: 1.5s;
+    }
+
+    .mock-category span {
+      color: var(--muted);
+      font-size: 12px;
+      font-family: "Usage Mono", monospace;
+    }
+
+    .mock-metrics {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .mock-metric {
+      border: 1px solid var(--line);
+      background: var(--purple-100);
+      border-radius: var(--radius);
+      padding: 9px;
+      min-height: 56px;
+    }
+
+    .mock-metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 3px;
+    }
+
+    .mock-metric strong {
+      font-family: "Usage Mono", monospace;
+      font-size: 17px;
+    }
+
+    .mock-table {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .mock-row {
+      display: grid;
+      grid-template-columns: 1.1fr 1.1fr .8fr .8fr 1fr 1fr .8fr;
+    }
+
+    .mock-row span {
+      padding: 9px 7px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid rgba(93, 61, 136, .1);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .mock-row.header span {
+      background: var(--purple-200);
+      font-weight: 900;
+    }
+
+    .mock-cursor {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--purple-700);
+      box-shadow: 0 0 0 8px rgba(123, 75, 197, .14);
+      left: 42%;
+      top: 55%;
+      animation: cursorTour 6s infinite ease-in-out;
+    }
+
+    .chapter-nav {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(16px);
+      margin-bottom: 18px;
+    }
+
+    .chapter-nav button,
+    .primary-button,
+    .ghost-button,
+    .quiz-option,
+    .step-button {
+      border: 1px solid rgba(104, 64, 167, .18);
+      border-radius: 6px;
+      background: var(--purple-100);
+      color: var(--purple-700);
+      padding: 11px 13px;
+      cursor: pointer;
+      font-weight: 900;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+    }
+
+    .chapter-nav button:hover,
+    .primary-button:hover,
+    .ghost-button:hover,
+    .quiz-option:hover,
+    .step-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(104, 64, 167, .16);
+    }
+
+    .chapter-nav button.is-active,
+    .primary-button {
+      background: var(--purple-700);
+      color: white;
+      box-shadow: 0 10px 22px rgba(104, 64, 167, .24);
+    }
+
+    .ghost-button {
+      background: rgba(243, 237, 255, .8);
+    }
+
+    .chapter-panel {
+      display: none;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .chapter-panel.is-active {
+      display: block;
+      animation: panelIn .22s ease-out;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .section-heading h2 {
+      font-size: 24px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 28px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      color: var(--purple-700);
+      background: var(--purple-100);
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(340px, 1.05fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .lesson-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .lesson-card,
+    .result-card {
+      padding: 16px;
+    }
+
+    .lesson-card p,
+    .result-card p {
+      color: var(--muted);
+      margin: 8px 0 0;
+    }
+
+    .stepper {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .72);
+      padding: 16px;
+    }
+
+    .step-screen {
+      min-height: 180px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, #fff, var(--purple-100));
+      padding: 16px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .step-screen h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    .step-screen p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .step-visual {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .step-visual div {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .86);
+      padding: 12px;
+      min-height: 70px;
+      font-weight: 900;
+      color: var(--purple-900);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .step-visual div::after {
+      content: "";
+      position: absolute;
+      inset: auto 10px 10px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--sage-300);
+      transform-origin: left;
+      animation: growLine 3s infinite;
+    }
+
+    .step-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .step-dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .step-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--purple-200);
+    }
+
+    .step-dots span.is-active {
+      background: var(--purple-700);
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    label.field {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .field input,
+    .field select,
+    .text-input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, .92);
+      color: var(--ink);
+      min-height: 40px;
+      padding: 9px 11px;
+      outline: none;
+      transition: border .18s ease, box-shadow .18s ease;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .text-input:focus {
+      border-color: var(--purple-600);
+      box-shadow: 0 0 0 3px rgba(123, 75, 197, .13);
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .metric-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .95), rgba(243, 237, 255, .86));
+      padding: 13px;
+      min-height: 86px;
+    }
+
+    .metric-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .metric-value {
+      display: block;
+      font-size: clamp(18px, 2vw, 26px);
+      font-weight: 900;
+      line-height: 1.18;
+      overflow-wrap: anywhere;
+    }
+
+    .metric-stock-input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, .92);
+      color: var(--ink);
+      min-height: 38px;
+      padding: 7px 9px;
+      outline: none;
+      font-size: clamp(18px, 1.8vw, 24px);
+      font-weight: 900;
+    }
+
+    .metric-card.is-highlighted {
+      border-color: var(--purple-600);
+      box-shadow: 0 0 0 4px rgba(123, 75, 197, .16), 0 16px 32px rgba(104, 64, 167, .14);
+      animation: stockPulse 1.1s ease-in-out 2;
+    }
+
+    @keyframes stockPulse {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-3px);
+      }
+    }
+
+    .notice {
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: linear-gradient(90deg, var(--purple-100), rgba(237, 247, 241, .86));
+      padding: 12px 14px;
+      color: var(--purple-900);
+      font-weight: 800;
+    }
+
+    .table-shell {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: auto;
+      background: rgba(255, 255, 255, .78);
+    }
+
+    .tutorial-filters {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .summary-total {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .95), rgba(243, 237, 255, .86));
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--purple-900);
+      font-weight: 900;
+    }
+
+    .summary-total span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .summary-total strong {
+      font-size: 21px;
+      overflow-wrap: anywhere;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+
+    th,
+    td {
+      padding: 11px 12px;
+      border-bottom: 1px solid rgba(93, 61, 136, .1);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    th {
+      background: var(--purple-200);
+      font-weight: 900;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .motion-demo {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .74);
+      padding: 16px;
+      position: relative;
+      min-height: 238px;
+      overflow: hidden;
+    }
+
+    .motion-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .animated-ledger {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--surface-strong);
+    }
+
+    .animated-ledger .row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    .animated-ledger .row span {
+      padding: 10px 8px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid rgba(93, 61, 136, .1);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .animated-ledger .head span {
+      background: var(--purple-200);
+      font-weight: 900;
+    }
+
+    .animated-cell {
+      animation: cellPulse 4s infinite;
+    }
+
+    .play-cursor {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      background: var(--purple-700);
+      box-shadow: 0 0 0 8px rgba(123, 75, 197, .14);
+      animation: recordCursor 4s infinite ease-in-out;
+      pointer-events: none;
+    }
+
+    .is-paused .animated-cell,
+    .is-paused .play-cursor,
+    .is-paused .step-visual div::after,
+    .is-paused .mock-category,
+    .is-paused .mock-cursor {
+      animation-play-state: paused;
+    }
+
+    .trend-wrap {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .9), rgba(243, 237, 255, .72));
+      padding: 12px;
+    }
+
+    .trend-chart {
+      display: block;
+      width: 100%;
+      min-height: 260px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(243, 237, 255, .7));
+    }
+
+    .trend-point {
+      cursor: pointer;
+    }
+
+    .trend-point:focus {
+      outline: 3px solid rgba(123, 75, 197, .28);
+      outline-offset: 4px;
+    }
+
+    .breakdown {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 16px;
+      align-items: center;
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .82);
+      padding: 14px;
+    }
+
+    .pie {
+      width: 132px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 8px solid rgba(255, 255, 255, .8);
+      box-shadow: inset 0 0 0 1px var(--line), 0 10px 22px rgba(104, 64, 167, .13);
+      background: conic-gradient(var(--purple-700) 0 48%, var(--sage-500) 48% 76%, #9c7ad3 76% 100%);
+    }
+
+    .breakdown h4 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .breakdown-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .breakdown-list li {
+      display: grid;
+      grid-template-columns: 12px 1fr auto auto;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+    }
+
+    .swatch {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--purple-700);
+    }
+
+    .swatch.sage {
+      background: var(--sage-500);
+    }
+
+    .swatch.soft {
+      background: #9c7ad3;
+    }
+
+    .accordion {
+      display: grid;
+      gap: 10px;
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .8);
+      padding: 0;
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 14px 16px;
+      font-weight: 900;
+      background: var(--purple-100);
+    }
+
+    details p,
+    details ul {
+      margin: 0;
+      padding: 14px 16px 16px;
+      color: var(--muted);
+    }
+
+    .todo-demo {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .message-list {
+      display: grid;
+      gap: 10px;
+      max-height: 240px;
+      overflow: auto;
+      padding-right: 8px;
+    }
+
+    .message-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .82);
+      padding: 13px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .message-card.is-hidden,
+    .notice.is-hidden {
+      display: none;
+    }
+
+    .message-card strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .message-card span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .settings-demo {
+      display: grid;
+      grid-template-columns: minmax(220px, .9fr) minmax(0, 1.1fr);
+      gap: 14px;
+    }
+
+    .icon-preview {
+      min-height: 260px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(243, 237, 255, .88), rgba(255, 255, 255, .9));
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .icon-art {
+      width: 190px;
+      aspect-ratio: 1;
+      border-radius: 28px;
+      border: 1px solid rgba(104, 64, 167, .2);
+      background:
+        radial-gradient(circle at 68% 26%, #8d71dc 0 15%, transparent 16%),
+        linear-gradient(135deg, #f7f2ff, #d9cbff 50%, #edf7f1);
+      box-shadow: inset 0 0 0 12px rgba(255, 255, 255, .58), 0 18px 40px rgba(75, 48, 116, .16);
+      position: relative;
+    }
+
+    .icon-art::before {
+      content: "";
+      position: absolute;
+      left: 44px;
+      top: 48px;
+      width: 94px;
+      height: 112px;
+      border-radius: 10px;
+      border: 4px solid #7655c4;
+      background:
+        repeating-linear-gradient(to bottom, transparent 0 16px, rgba(123, 75, 197, .25) 17px 22px),
+        rgba(255, 255, 255, .72);
+    }
+
+    .icon-art::after {
+      content: "";
+      position: absolute;
+      right: 35px;
+      bottom: 36px;
+      width: 64px;
+      height: 46px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #b9a7ec, #d9e7bd);
+      box-shadow: -34px 16px 0 #f8f6ff;
+    }
+
+    .checklist,
+    .quiz {
+      display: grid;
+      gap: 10px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .78);
+      cursor: pointer;
+    }
+
+    .check-item input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--purple-700);
+    }
+
+    .quiz-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .82);
+      padding: 14px;
+      transition: border-color .2s ease, box-shadow .2s ease, background .2s ease, transform .2s ease;
+      animation: panelIn .22s ease;
+    }
+
+    .quiz-card.is-hidden {
+      display: none;
+    }
+
+    .quiz-card.is-solved {
+      border-color: rgba(110, 167, 127, .58);
+      background: rgba(241, 248, 239, .92);
+      box-shadow: 0 10px 22px rgba(110, 167, 127, .12);
+    }
+
+    .quiz-card strong {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .quiz-options {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .quiz-option.is-correct {
+      background: var(--sage-100);
+      color: #2d6240;
+      border-color: rgba(110, 167, 127, .45);
+      box-shadow: 0 0 0 3px rgba(110, 167, 127, .14);
+    }
+
+    .quiz-option.is-wrong {
+      background: #fff0f4;
+      color: #8b3348;
+      border-color: rgba(210, 92, 122, .28);
+      box-shadow: 0 0 0 3px rgba(210, 92, 122, .12);
+      animation: wrongNudge .22s ease;
+    }
+
+    .quiz-feedback {
+      min-height: 20px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .quiz-feedback.is-correct {
+      color: #2d6240;
+    }
+
+    .quiz-feedback.is-wrong {
+      color: #8b3348;
+    }
+
+    @keyframes panelIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes wrongNudge {
+      0%, 100% {
+        transform: translateX(0);
+      }
+      35% {
+        transform: translateX(-3px);
+      }
+      70% {
+        transform: translateX(3px);
+      }
+    }
+
+    @keyframes floatSelect {
+      0%, 100% {
+        border-color: var(--purple-200);
+        background: #fff;
+      }
+      35%, 55% {
+        border-color: var(--purple-600);
+        background: var(--purple-100);
+      }
+    }
+
+    @keyframes cursorTour {
+      0%, 100% {
+        left: 34%;
+        top: 64%;
+      }
+      28% {
+        left: 19%;
+        top: 34%;
+      }
+      56% {
+        left: 62%;
+        top: 46%;
+      }
+      78% {
+        left: 78%;
+        top: 25%;
+      }
+    }
+
+    @keyframes growLine {
+      0%, 30% {
+        transform: scaleX(.18);
+      }
+      65%, 100% {
+        transform: scaleX(1);
+      }
+    }
+
+    @keyframes cellPulse {
+      0%, 100% {
+        background: transparent;
+      }
+      35%, 58% {
+        background: rgba(231, 219, 251, .92);
+      }
+    }
+
+    @keyframes recordCursor {
+      0%, 100% {
+        left: 10%;
+        top: 72%;
+      }
+      32% {
+        left: 38%;
+        top: 72%;
+      }
+      62% {
+        left: 70%;
+        top: 72%;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .hero,
+      .two-column,
+      .settings-demo {
+        grid-template-columns: 1fr;
+      }
+
+      .chapter-nav {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .mock-body {
+        grid-template-columns: 1fr;
+      }
+
+      .metrics-grid,
+      .mock-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .app-shell {
+        width: min(100vw - 24px, 1500px);
+        padding-top: 18px;
+      }
+
+      .topbar,
+      .todo-demo,
+      .breakdown {
+        grid-template-columns: 1fr;
+      }
+
+      .top-actions {
+        justify-content: stretch;
+      }
+
+      .date-card,
+      .progress-card {
+        flex: 1;
+      }
+
+      .chapter-nav {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-points,
+      .lesson-grid,
+      .calc-grid,
+      .tutorial-filters {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <h1>物品使用记录101</h1>
+      </div>
+    </header>
+
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-copy">
+        <div>
+          <h2 id="heroTitle">从建立物品类别到看懂趋势分析，一页掌握应用核心用法。</h2>
+          <p>
+            这份教程按照应用本身的工作流组织：先记录物品使用流水，再用统计汇总查看金额和趋势，
+            最后通过外源文件、待办提醒和设置完成日常维护。
+          </p>
+        </div>
+        <div class="hero-points" aria-label="教程重点">
+          <div class="hero-point">
+            <strong>可互动</strong>
+            <span>点击章节、数据点和测验选项，边看边练。</span>
+          </div>
+          <div class="hero-point">
+            <strong>可计算</strong>
+            <span>输入日期、数量和价格，实时观察指标变化。</span>
+          </div>
+          <div class="hero-point">
+            <strong>可复盘</strong>
+            <span>完成清单会记录学习进度，适合回头检查。</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <nav class="chapter-nav" aria-label="教程章节">
+      <button type="button" class="is-active" data-panel-target="ledger">物品流水</button>
+      <button type="button" data-panel-target="summary">统计汇总</button>
+      <button type="button" data-panel-target="external">外源文件</button>
+      <button type="button" data-panel-target="todo">待办提醒</button>
+      <button type="button" data-panel-target="settings">设置维护</button>
+    </nav>
+
+    <section class="chapter-panel is-active" id="ledger">
+      <div class="section-heading">
+        <div>
+          <h2>物品使用流水怎么填</h2>
+        </div>
+        <span class="pill">核心页面</span>
+      </div>
+
+      <div class="lesson-grid">
+        <article class="lesson-card">
+          <h3>1. 管理物品类别</h3>
+          <p>左侧用于增加、删除和重命名类别。删除类别前应用会弹窗确认，避免误删。</p>
+        </article>
+        <article class="lesson-card">
+          <h3>2. 记录使用流水</h3>
+          <p>右侧每一行是一条使用记录。填写日期、数量、品牌、型号、价格和使用情况。</p>
+        </article>
+        <article class="lesson-card">
+          <h3>3. 日期填写规范</h3>
+          <p>日期可填写 20260608、260608、202668（以上三种自动转换为2026/6/8）或直接输入 2026/06/08。年份应以 20 开头，月份为 01 到 12，日期需符合当月天数。</p>
+        </article>
+      </div>
+
+      <div style="height: 16px"></div>
+      <div class="result-card">
+        <div class="section-heading">
+          <div>
+            <h3>试填一条记录，看看指标如何变化</h3>
+          </div>
+          <span class="pill">可编辑演示</span>
+        </div>
+        <div class="metrics-grid">
+          <div class="metric-card"><span>相隔天数</span><strong class="metric-value" id="daysOut">18</strong></div>
+          <div class="metric-card"><span>消耗总数</span><strong class="metric-value" id="qtyOut">1</strong></div>
+          <div class="metric-card"><span>消耗总金额</span><strong class="metric-value" id="amountOut">¥88.00</strong></div>
+          <div class="metric-card"><span>月均消耗数</span><strong class="metric-value" id="monthQtyOut">1.7</strong></div>
+          <div class="metric-card"><span>月均消耗金额</span><strong class="metric-value" id="monthAmountOut">¥146.67</strong></div>
+          <div class="metric-card"><span>库存</span><input class="mono metric-stock-input" id="stock" type="number" value="2" /></div>
+        </div>
+        <div style="height: 12px"></div>
+        <div class="calc-grid">
+          <label class="field">开始使用日期
+            <input class="mono" id="startDate" value="2026/06/01" placeholder="2026/06/18" />
+          </label>
+          <label class="field">完成使用日期
+            <input class="mono" id="endDate" value="2026/06/18" placeholder="2026/06/18" />
+          </label>
+          <label class="field">数量
+            <input class="mono" id="quantity" type="number" min="1" value="1" />
+          </label>
+          <label class="field">价格
+            <input class="mono" id="price" type="number" min="0" step="0.01" value="88" />
+          </label>
+          <label class="field">品牌
+            <input id="brand" value="竹柔" />
+          </label>
+          <label class="field">型号
+            <input id="model" value="抽纸三层" />
+          </label>
+          <label class="field">使用情况
+            <select id="status">
+              <option>在用</option>
+              <option selected>用完</option>
+            </select>
+          </label>
+        </div>
+        <p class="notice" id="ledgerNotice">提示：如果日期格式正确且完成日期不早于开始日期，相隔天数会自动计算。</p>
+      </div>
+    </section>
+
+    <section class="chapter-panel" id="summary">
+      <div class="section-heading">
+        <div>
+          <h2>统计汇总与趋势分析</h2>
+        </div>
+      </div>
+
+      <div class="two-column">
+        <div class="result-card">
+          <h3>筛选逻辑</h3>
+          <p>可按物品类别、品牌、年份和月份筛选。实际应用中筛选可多选。筛选后，“条件金额”和“筛选结果”会同步变化。</p>
+          <div class="tutorial-filters" aria-label="筛选演示">
+            <label class="field">物品类别
+              <select id="summaryCategoryFilter">
+                <option>不限</option>
+                <option>纸巾</option>
+                <option>洗衣用品</option>
+                <option>厨房清洁</option>
+                <option>收纳用品</option>
+                <option>办公耗材</option>
+              </select>
+            </label>
+            <label class="field">品牌
+              <select id="summaryBrandFilter">
+                <option>不限</option>
+                <option>竹柔</option>
+                <option>清新家</option>
+                <option>净洁</option>
+                <option>清序</option>
+                <option>墨韵</option>
+              </select>
+            </label>
+            <label class="field">年份
+              <select id="summaryYearFilter">
+                <option>不限</option>
+                <option>2026</option>
+                <option>2025</option>
+              </select>
+            </label>
+            <label class="field">月份
+              <select id="summaryMonthFilter">
+                <option>不限</option>
+                <option>2026年06月</option>
+                <option>2026年05月</option>
+                <option>2026年04月</option>
+                <option>2026年03月</option>
+                <option>2025年12月</option>
+                <option>2025年11月</option>
+              </select>
+            </label>
+            <div class="summary-total"><span>条件金额</span><strong id="summaryAmount">¥0.00</strong></div>
+          </div>
+          <div class="table-shell">
+            <table>
+              <thead>
+                <tr><th>物品类别</th><th>品牌</th><th>年份</th><th>月份</th><th>价格</th></tr>
+              </thead>
+              <tbody id="summaryRows"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="trend-wrap">
+          <div class="section-heading">
+            <div>
+              <h3>趋势分析</h3>
+              <p style="margin: 4px 0 0; color: var(--muted); font-weight: 900;">点击或悬停图中圆点查看当月构成。</p>
+            </div>
+            <span class="pill">最近半年</span>
+          </div>
+          <svg class="trend-chart" id="trendChart" viewBox="0 0 760 260" role="img" aria-label="消耗总金额折线图">
+            <g stroke="#e7dbfb" stroke-width="1">
+              <line x1="70" y1="38" x2="704" y2="38"></line>
+              <line x1="70" y1="82" x2="704" y2="82"></line>
+              <line x1="70" y1="126" x2="704" y2="126"></line>
+              <line x1="70" y1="170" x2="704" y2="170"></line>
+              <line x1="70" y1="214" x2="704" y2="214"></line>
+            </g>
+            <text x="70" y="24" class="chart-label" fill="#33204f" font-size="12" font-weight="900">纵轴：金额（元）</text>
+            <text x="626" y="238" class="chart-label" fill="#33204f" font-size="12" font-weight="900">横轴：月份</text>
+            <g fill="#74668a" font-size="11" class="chart-label">
+              <text x="40" y="218">0</text><text x="31" y="174">100</text><text x="31" y="130">200</text><text x="31" y="86">300</text><text x="31" y="42">400</text>
+            </g>
+            <polyline points="88,185 206,180 324,156 442,132 560,86 678,58" fill="none" stroke="#6840a7" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+            <g fill="#6840a7" font-size="11" font-weight="900" class="chart-label">
+              <text x="75" y="176">¥66</text><text x="192" y="171">¥74</text><text x="306" y="147">¥132</text><text x="424" y="123">¥158</text><text x="540" y="77">¥264</text><text x="655" y="49">¥304</text>
+            </g>
+            <g>
+              <circle class="trend-point" tabindex="0" data-month="2026年01月" cx="88" cy="185" r="7" fill="#fff" stroke="#6840a7" stroke-width="4"></circle>
+              <circle class="trend-point" tabindex="0" data-month="2026年02月" cx="206" cy="180" r="7" fill="#fff" stroke="#6840a7" stroke-width="4"></circle>
+              <circle class="trend-point" tabindex="0" data-month="2026年03月" cx="324" cy="156" r="7" fill="#fff" stroke="#6840a7" stroke-width="4"></circle>
+              <circle class="trend-point" tabindex="0" data-month="2026年04月" cx="442" cy="132" r="7" fill="#fff" stroke="#6840a7" stroke-width="4"></circle>
+              <circle class="trend-point" tabindex="0" data-month="2026年05月" cx="560" cy="86" r="7" fill="#fff" stroke="#6840a7" stroke-width="4"></circle>
+              <circle class="trend-point" tabindex="0" data-month="2026年06月" cx="678" cy="58" r="7" fill="#fff" stroke="#6840a7" stroke-width="4"></circle>
+            </g>
+            <g fill="#74668a" class="chart-label" font-size="11">
+              <text x="82" y="238">01</text><text x="200" y="238">02</text><text x="318" y="238">03</text><text x="436" y="238">04</text><text x="554" y="238">05</text><text x="672" y="238">06</text>
+            </g>
+          </svg>
+          <div class="breakdown" id="breakdownBox" aria-live="polite">
+            <div class="pie" id="pieBox" aria-hidden="true"></div>
+            <div>
+              <h4 id="breakdownTitle">2026年06月构成</h4>
+              <ul class="breakdown-list" id="breakdownList"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter-panel" id="external">
+      <div class="section-heading">
+        <div>
+          <h2>外源文件管理</h2>
+        </div>
+        <span class="pill">导出与导入</span>
+      </div>
+
+      <div class="accordion">
+        <details open>
+          <summary>导出文件：把当前数据保存成表格文件</summary>
+          <p>选择存放地址后点击“导出文件”。文件名可直接在名称框中修改，也可以恢复默认命名规则。</p>
+        </details>
+        <details>
+          <summary>打开文件和打开所在位置</summary>
+          <p>导出完成后，可以直接打开文件，也可以打开文件所在文件夹，便于上传网盘或归档。</p>
+        </details>
+        <details>
+          <summary>导入文件：把修改后的表格文件带回应用</summary>
+          <p>如果你在导出文件中增加类别、修改记录或补充数据，导入后应用会根据工作表内容调整当前数据。</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="chapter-panel" id="todo">
+      <div class="section-heading">
+        <div>
+          <h2>待办和提醒怎么看</h2>
+        </div>
+        <span class="pill">有消息会闪烁</span>
+      </div>
+
+      <div class="todo-demo">
+        <div class="result-card">
+          <div class="section-heading">
+            <h3>待办</h3>
+            <span class="pill">库存低于等于 0</span>
+          </div>
+          <div class="message-list" id="todoList">
+            <div class="message-card" data-stock-todo>
+              <div><strong>纸巾</strong><span>库存为 0，需要补货。库存调高后该待办自动消失。</span></div>
+              <button type="button" class="ghost-button jump-to-stock">去处理</button>
+            </div>
+            <div class="message-card" data-stock-todo>
+              <div><strong>厨房清洁</strong><span>库存为 0，需要补货。适合用来提醒采购。</span></div>
+              <button type="button" class="ghost-button jump-to-stock">去处理</button>
+            </div>
+            <div class="notice is-hidden" id="todoEmpty">库存已调高，本页示例待办已处理。</div>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <div class="section-heading">
+            <h3>提醒</h3>
+            <button type="button" class="ghost-button" id="readAll">一键已读</button>
+          </div>
+          <div class="message-list" id="reminderList">
+            <div class="message-card" data-reminder-card>
+              <div><strong>洗衣用品</strong><span>月消耗金额从 2026年05月 到 2026年06月上升 37.1%。</span></div>
+              <button type="button" class="ghost-button read-one">已读</button>
+            </div>
+            <div class="message-card" data-reminder-card>
+              <div><strong>纸巾</strong><span>月消耗数从 2026年05月 到 2026年06月上升 100.0%。</span></div>
+              <button type="button" class="ghost-button read-one">已读</button>
+            </div>
+            <div class="message-card" data-reminder-card>
+              <div><strong>导入提醒</strong><span>若导入文件中日期、数量或价格异常，会在这里提示你检查文件。</span></div>
+              <button type="button" class="ghost-button read-one">已读</button>
+            </div>
+            <div class="notice is-hidden" id="reminderEmpty">暂无新的消耗变化提醒。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter-panel" id="settings">
+      <div class="section-heading">
+        <div>
+          <h2>设置与维护</h2>
+        </div>
+        <span class="pill">保持应用清爽</span>
+      </div>
+
+      <div class="settings-demo">
+        <div class="icon-preview">
+          <div class="icon-art" aria-label="软件图标示意"></div>
+        </div>
+        <div class="lesson-card">
+          <h3>设置页的三个重点</h3>
+          <p><strong>清除缓存：</strong>清理临时缓存和预览状态，但保留物品数据、显示模式、图标和已读提醒。</p>
+          <p><strong>显示模式：</strong>可切换日间模式和夜间模式。教程当前使用日间模式的艺术风格。</p>
+          <p><strong>软件图标管理：</strong>可上传电脑内图片作为预览，也能恢复默认图标。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" style="padding: 22px;">
+      <div class="section-heading">
+        <div>
+          <h2>完成清单和小测验</h2>
+        </div>
+        <span class="pill">用于自查</span>
+      </div>
+      <div class="two-column">
+        <div class="checklist">
+          <label class="check-item"><input type="checkbox" data-progress-check />我知道如何新增、重命名和删除物品类别。</label>
+          <label class="check-item"><input type="checkbox" data-progress-check />我知道开始日期、完成日期和相隔天数的关系。</label>
+          <label class="check-item"><input type="checkbox" data-progress-check />我能在统计汇总中筛选并查看趋势分析。</label>
+          <label class="check-item"><input type="checkbox" data-progress-check />我知道导出、导入和提醒功能的作用。</label>
+        </div>
+        <div class="quiz">
+          <div class="quiz-card" data-quiz-card>
+            <strong>如果物品库存低于等于 0，应该去哪里看提示？</strong>
+            <div class="quiz-options">
+              <button type="button" class="quiz-option" data-correct="false">设置</button>
+              <button type="button" class="quiz-option" data-correct="true">待办/提醒</button>
+              <button type="button" class="quiz-option" data-correct="false">外源文件管理</button>
+            </div>
+            <p class="quiz-feedback" aria-live="polite"></p>
+          </div>
+          <div class="quiz-card" data-quiz-card>
+            <strong>趋势分析中的数据点可以用来做什么？</strong>
+            <div class="quiz-options">
+              <button type="button" class="quiz-option" data-correct="true">查看当月构成</button>
+              <button type="button" class="quiz-option" data-correct="false">删除类别</button>
+              <button type="button" class="quiz-option" data-correct="false">恢复默认图标</button>
+            </div>
+            <p class="quiz-feedback" aria-live="polite"></p>
+          </div>
+          <div class="quiz-card is-hidden" data-quiz-card>
+            <strong>从应用导出的表格文件修改后，应该从哪里导回应用？</strong>
+            <div class="quiz-options">
+              <button type="button" class="quiz-option" data-correct="false">统计汇总</button>
+              <button type="button" class="quiz-option" data-correct="true">外源文件管理</button>
+              <button type="button" class="quiz-option" data-correct="false">设置维护</button>
+            </div>
+            <p class="quiz-feedback" aria-live="polite"></p>
+          </div>
+          <div class="quiz-card is-hidden" data-quiz-card>
+            <strong>下面哪种日期写法符合应用的日期填写规范？</strong>
+            <div class="quiz-options">
+              <button type="button" class="quiz-option" data-correct="false">2026/13/01</button>
+              <button type="button" class="quiz-option" data-correct="true">2026/06/18</button>
+              <button type="button" class="quiz-option" data-correct="false">260230</button>
+            </div>
+            <p class="quiz-feedback" aria-live="polite"></p>
+          </div>
+          <div class="quiz-card is-hidden" data-quiz-card>
+            <strong>删除物品类别前，应用会先做什么？</strong>
+            <div class="quiz-options">
+              <button type="button" class="quiz-option" data-correct="true">弹窗确认</button>
+              <button type="button" class="quiz-option" data-correct="false">直接清空所有数据</button>
+              <button type="button" class="quiz-option" data-correct="false">自动导出文件</button>
+            </div>
+            <p class="quiz-feedback" aria-live="polite"></p>
+          </div>
+          <div class="quiz-card is-hidden" data-quiz-card>
+            <strong>如果想恢复最初的软件图标，应该进入哪个页面？</strong>
+            <div class="quiz-options">
+              <button type="button" class="quiz-option" data-correct="false">物品流水</button>
+              <button type="button" class="quiz-option" data-correct="false">统计汇总</button>
+              <button type="button" class="quiz-option" data-correct="true">设置维护</button>
+            </div>
+            <p class="quiz-feedback" aria-live="polite"></p>
+          </div>
+          <div class="quiz-card is-hidden" data-quiz-card>
+            <strong>“条件金额”主要根据什么变化？</strong>
+            <div class="quiz-options">
+              <button type="button" class="quiz-option" data-correct="false">软件图标大小</button>
+              <button type="button" class="quiz-option" data-correct="true">筛选条件下的金额汇总</button>
+              <button type="button" class="quiz-option" data-correct="false">类别排序位置</button>
+            </div>
+            <p class="quiz-feedback" aria-live="polite"></p>
+          </div>
+          <div class="quiz-card is-hidden" data-quiz-card>
+            <strong>哪类记录会计入消耗总数、消耗总金额和月均指标？</strong>
+            <div class="quiz-options">
+              <button type="button" class="quiz-option" data-correct="false">所有“在用”记录</button>
+              <button type="button" class="quiz-option" data-correct="true">使用情况为“用完”的记录</button>
+              <button type="button" class="quiz-option" data-correct="false">空白记录</button>
+            </div>
+            <p class="quiz-feedback" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+    const panels = $$(".chapter-panel");
+    const navButtons = $$(".chapter-nav button");
+
+    function showPanel(target) {
+      navButtons.forEach((item) => item.classList.toggle("is-active", item.dataset.panelTarget === target));
+      panels.forEach((panel) => panel.classList.toggle("is-active", panel.id === target));
+    }
+
+    navButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        showPanel(button.dataset.panelTarget);
+      });
+    });
+
+    function hasValidDateParts(year, month, day) {
+      if (year < 2000 || year > 2099 || month < 1 || month > 12 || day < 1) return false;
+      const date = new Date(year, month - 1, day);
+      return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
+    }
+
+    function normalizeDateText(value) {
+      const raw = value.trim();
+      if (!raw) return "";
+      let year;
+      let month;
+      let day;
+
+      if (/^\d{8}$/.test(raw)) {
+        year = Number(raw.slice(0, 4));
+        month = Number(raw.slice(4, 6));
+        day = Number(raw.slice(6, 8));
+      } else if (/^\d{6}$/.test(raw)) {
+        if (raw.startsWith("20")) {
+          year = Number(raw.slice(0, 4));
+          month = Number(raw.slice(4, 5));
+          day = Number(raw.slice(5, 6));
+        } else {
+          year = 2000 + Number(raw.slice(0, 2));
+          month = Number(raw.slice(2, 4));
+          day = Number(raw.slice(4, 6));
+        }
+      } else {
+        return raw;
+      }
+
+      return hasValidDateParts(year, month, day) ? `${year}/${month}/${day}` : raw;
+    }
+
+    function normalizeDateField(input) {
+      const nextValue = normalizeDateText(input.value);
+      if (nextValue !== input.value.trim()) input.value = nextValue;
+    }
+
+    function parseDate(value) {
+      const match = /^(\d{4})\/(\d{1,2})\/(\d{1,2})$/.exec(normalizeDateText(value));
+      if (!match) return null;
+      const year = Number(match[1]);
+      const month = Number(match[2]);
+      const day = Number(match[3]);
+      if (!hasValidDateParts(year, month, day)) return null;
+      return new Date(year, month - 1, day);
+    }
+
+    function formatMoney(value) {
+      return `¥${Number(value || 0).toFixed(2)}`;
+    }
+
+    function updateLedgerCalc() {
+      const start = parseDate($("#startDate").value);
+      const end = parseDate($("#endDate").value);
+      const quantity = Math.max(0, Number($("#quantity").value || 0));
+      const price = Math.max(0, Number($("#price").value || 0));
+      const status = $("#status").value;
+      let days = 0;
+      let notice = "提示：如果日期格式正确且完成日期不早于开始日期，相隔天数会自动计算。";
+
+      if (start && end) {
+        days = Math.round((end - start) / 86400000) + 1;
+        if (days <= 0) {
+          days = 0;
+          notice = "完成使用日期早于开始使用日期时，应用会弹窗提醒并清空错误日期。";
+        } else if (status !== "用完") {
+          notice = "日期完整且正确时，应用可自动将使用情况改为“用完”，但用户仍可自由调整。";
+        }
+      } else {
+        notice = "日期需使用 2026/06/18 这类格式。应用会对错误日期做弹窗提醒。";
+      }
+
+      const amount = status === "用完" ? price : 0;
+      const qty = status === "用完" ? quantity : 0;
+      const monthFactor = days > 0 ? days / 30 : 0;
+      $("#daysOut").textContent = days ? String(days) : "--";
+      $("#qtyOut").textContent = String(qty);
+      $("#amountOut").textContent = formatMoney(amount);
+      $("#monthQtyOut").textContent = monthFactor ? (qty / monthFactor).toFixed(1) : "0.0";
+      $("#monthAmountOut").textContent = monthFactor ? formatMoney(amount / monthFactor) : "¥0.00";
+      $("#ledgerNotice").textContent = notice;
+    }
+
+    ["startDate", "endDate", "quantity", "price", "status"].forEach((id) => {
+      $(`#${id}`).addEventListener("input", updateLedgerCalc);
+      $(`#${id}`).addEventListener("change", updateLedgerCalc);
+    });
+    ["startDate", "endDate"].forEach((id) => {
+      const input = $(`#${id}`);
+      input.addEventListener("blur", () => {
+        normalizeDateField(input);
+        updateLedgerCalc();
+      });
+      input.addEventListener("change", () => {
+        normalizeDateField(input);
+        updateLedgerCalc();
+      });
+    });
+    updateLedgerCalc();
+
+    const summaryDemoRows = [
+      { category: "纸巾", brand: "竹柔", year: "2026", month: "2026年06月", price: 88 },
+      { category: "洗衣用品", brand: "清新家", year: "2026", month: "2026年06月", price: 96 },
+      { category: "办公耗材", brand: "墨韵", year: "2026", month: "2026年06月", price: 120 },
+      { category: "厨房清洁", brand: "净洁", year: "2026", month: "2026年05月", price: 26 },
+      { category: "收纳用品", brand: "清序", year: "2026", month: "2026年05月", price: 110 },
+      { category: "洗衣用品", brand: "清新家", year: "2026", month: "2026年04月", price: 68 },
+      { category: "纸巾", brand: "竹柔", year: "2026", month: "2026年03月", price: 52 },
+      { category: "洗衣用品", brand: "清新家", year: "2025", month: "2025年12月", price: 50 },
+      { category: "纸巾", brand: "竹柔", year: "2025", month: "2025年11月", price: 45 }
+    ];
+
+    function renderSummaryRows() {
+      const category = $("#summaryCategoryFilter").value;
+      const brand = $("#summaryBrandFilter").value;
+      const year = $("#summaryYearFilter").value;
+      const month = $("#summaryMonthFilter").value;
+      const rows = summaryDemoRows.filter((row) => {
+        const categoryMatch = category === "不限" || row.category === category;
+        const brandMatch = brand === "不限" || row.brand === brand;
+        const yearMatch = year === "不限" || row.year === year;
+        const monthMatch = month === "不限" || row.month === month;
+        return categoryMatch && brandMatch && yearMatch && monthMatch;
+      });
+      const total = rows.reduce((sum, row) => sum + row.price, 0);
+      $("#summaryAmount").textContent = formatMoney(total);
+      $("#summaryRows").innerHTML = rows.length
+        ? rows.map((row) => `<tr><td>${row.category}</td><td>${row.brand}</td><td class="mono">${row.year}</td><td>${row.month}</td><td class="money">${formatMoney(row.price)}</td></tr>`).join("")
+        : "<tr><td colspan='5'>暂无符合条件的数据。</td></tr>";
+    }
+
+    ["summaryCategoryFilter", "summaryBrandFilter", "summaryYearFilter", "summaryMonthFilter"].forEach((id) => {
+      $(`#${id}`).addEventListener("change", renderSummaryRows);
+    });
+    renderSummaryRows();
+
+    function refreshTodoCards() {
+      const todoCards = $$("[data-stock-todo]");
+      const visibleCards = todoCards.filter((card) => !card.classList.contains("is-hidden"));
+      $("#todoEmpty").classList.toggle("is-hidden", visibleCards.length > 0);
+    }
+
+    $("#stock").addEventListener("input", () => {
+      const stockValue = Number($("#stock").value || 0);
+      if (stockValue > 0) {
+        $$("[data-stock-todo].is-processing").forEach((card) => {
+          card.classList.add("is-hidden");
+          card.classList.remove("is-processing");
+        });
+        refreshTodoCards();
+      }
+    });
+
+    $$(".jump-to-stock").forEach((button) => {
+      button.addEventListener("click", () => {
+        const todoCard = button.closest("[data-stock-todo]");
+        todoCard.classList.add("is-processing");
+        $("#stock").value = "0";
+        updateLedgerCalc();
+        refreshTodoCards();
+        showPanel("ledger");
+        const stockCard = $("#stock").closest(".metric-card");
+        stockCard.classList.remove("is-highlighted");
+        $("#ledger").scrollIntoView({ behavior: "smooth", block: "start" });
+        window.setTimeout(() => {
+          stockCard.classList.add("is-highlighted");
+          $("#stock").focus({ preventScroll: true });
+        }, 260);
+      });
+    });
+    refreshTodoCards();
+
+    const breakdownData = {
+      "2026年01月": [
+        ["纸巾", 32, 48, "var(--purple-700)"],
+        ["厨房清洁", 24, 36, "var(--sage-500)"],
+        ["口腔护理", 10, 16, "#9c7ad3"]
+      ],
+      "2026年02月": [
+        ["纸巾", 29, 39, "var(--purple-700)"],
+        ["口腔护理", 29, 39, "var(--sage-500)"],
+        ["办公耗材", 16, 22, "#9c7ad3"]
+      ],
+      "2026年03月": [
+        ["纸巾", 52, 39, "var(--purple-700)"],
+        ["收纳用品", 80, 61, "var(--sage-500)"]
+      ],
+      "2026年04月": [
+        ["洗衣用品", 68, 43, "var(--purple-700)"],
+        ["厨房清洁", 26, 17, "var(--sage-500)"],
+        ["收纳用品", 64, 40, "#9c7ad3"]
+      ],
+      "2026年05月": [
+        ["洗衣用品", 70, 27, "var(--purple-700)"],
+        ["纸巾", 58, 22, "var(--sage-500)"],
+        ["收纳用品", 110, 42, "#9c7ad3"],
+        ["厨房清洁", 26, 9, "#bba1eb"]
+      ],
+      "2026年06月": [
+        ["洗衣用品", 96, 32, "var(--purple-700)"],
+        ["纸巾", 88, 29, "var(--sage-500)"],
+        ["办公耗材", 120, 39, "#9c7ad3"]
+      ]
+    };
+
+    function renderBreakdown(month) {
+      const data = breakdownData[month] || breakdownData["2026年06月"];
+      const stops = [];
+      let current = 0;
+      data.forEach((item) => {
+        const start = current;
+        current += item[2];
+        stops.push(`${item[3]} ${start}% ${current}%`);
+      });
+      $("#pieBox").style.background = `conic-gradient(${stops.join(", ")})`;
+      $("#breakdownTitle").textContent = `${month}构成`;
+      $("#breakdownList").innerHTML = data.map((item, index) => {
+        const swatchClass = index === 1 ? "sage" : index === 2 ? "soft" : "";
+        return `<li><span class="swatch ${swatchClass}"></span><strong>${item[0]}</strong><span class="money">¥${item[1].toFixed(2)}</span><span>${item[2]}%</span></li>`;
+      }).join("");
+    }
+
+    $$(".trend-point").forEach((point) => {
+      const show = () => renderBreakdown(point.dataset.month);
+      point.addEventListener("click", show);
+      point.addEventListener("focus", show);
+      point.addEventListener("mouseenter", show);
+    });
+    renderBreakdown("2026年06月");
+
+    function refreshReminderCards() {
+      const visibleCards = $$("[data-reminder-card]").filter((card) => !card.classList.contains("is-hidden"));
+      $("#reminderEmpty").classList.toggle("is-hidden", visibleCards.length > 0);
+    }
+
+    $("#readAll").addEventListener("click", () => {
+      $$("[data-reminder-card]").forEach((card) => card.classList.add("is-hidden"));
+      refreshReminderCards();
+    });
+
+    $$(".read-one").forEach((button) => {
+      button.addEventListener("click", () => {
+        button.closest("[data-reminder-card]").classList.add("is-hidden");
+        refreshReminderCards();
+      });
+    });
+    refreshReminderCards();
+
+    const quizCards = $$("[data-quiz-card]");
+    const solvedQuizCards = new Set();
+
+    function refreshQuizCards() {
+      let visibleCount = 0;
+      quizCards.forEach((card, index) => {
+        const shouldShow = !solvedQuizCards.has(index) && visibleCount < 2;
+        card.classList.toggle("is-hidden", !shouldShow);
+        if (shouldShow) visibleCount += 1;
+      });
+
+      const quiz = $(".quiz");
+      if (visibleCount === 0 && !$(".quiz-complete", quiz)) {
+        quiz.insertAdjacentHTML("beforeend", "<div class='notice quiz-complete'>全部答对了。你已经掌握这份教程的核心内容。</div>");
+      }
+    }
+
+    quizCards.forEach((card, index) => {
+      $$(".quiz-option", card).forEach((button) => {
+      button.addEventListener("click", () => {
+          const group = button.closest(".quiz-options");
+          const feedback = $(".quiz-feedback", card);
+          $$(".quiz-option", group).forEach((item) => {
+          item.classList.remove("is-correct", "is-wrong");
+        });
+          const isCorrect = button.dataset.correct === "true";
+          button.classList.add(isCorrect ? "is-correct" : "is-wrong");
+          feedback.classList.toggle("is-correct", isCorrect);
+          feedback.classList.toggle("is-wrong", !isCorrect);
+          feedback.textContent = isCorrect ? "答对了，下一题会自动出现。" : "还差一点，换个选项试试。";
+
+          if (isCorrect) {
+            solvedQuizCards.add(index);
+            card.classList.add("is-solved");
+            $$(".quiz-option", group).forEach((item) => {
+              item.disabled = true;
+            });
+            setTimeout(refreshQuizCards, 520);
+          }
+        });
+      });
+    });
+    refreshQuizCards();
+  </script>
+</body>
+</html>
